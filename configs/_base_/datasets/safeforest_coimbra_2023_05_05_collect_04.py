@@ -1,7 +1,7 @@
 # dataset settings
 dataset_type = "Safeforest23Dataset"
 # dataset settings
-data_root = "TODO_SAFEFOREST_DVC_ROOT/data/site_Coimbra/2023_05_05/collect_04/processed_01/annotations/safeforest23"
+data_root = "/data/site_Coimbra/2023_05_05/collect_04/processed_01/annotations/safeforest23"
 crop_size = (512, 512)
 train_pipeline = [
     dict(type='LoadImageFromFile'),
@@ -15,6 +15,28 @@ train_pipeline = [
     dict(type='RandomFlip', prob=0.5),
     dict(type='PhotoMetricDistortion'),
     dict(type='PackSegInputs')
+    dict(type="Albu", transforms =[
+            dict(
+                type='ShiftScaleRotate',
+                shift_limit=0.0625,
+                scale_limit=0.0,
+                rotate_limit=0,
+                interpolation=1,
+                p=0.5),
+            dict(
+                type='RandomBrightnessContrast',
+                brightness_limit=[0.1, 0.3],
+                contrast_limit=[0.1, 0.3],
+                p=0.2),
+            dict(type='ChannelShuffle', p=0.1),
+            dict(
+                type='OneOf',
+                transforms=[
+                    dict(type='Blur', blur_limit=3, p=1.0),
+                    dict(type='MedianBlur', blur_limit=3, p=1.0)
+                ],
+                p=0.1),
+        ])
 ]
 test_pipeline = [
     dict(type='LoadImageFromFile'),
@@ -23,6 +45,7 @@ test_pipeline = [
     # does not need to do resize data transform
     dict(type='LoadAnnotations'),
     dict(type='PackSegInputs')
+
 ]
 img_ratios = [0.5, 0.75, 1.0, 1.25, 1.5, 1.75]
 tta_pipeline = [
@@ -64,5 +87,5 @@ val_dataloader = dict(
         pipeline=test_pipeline))
 test_dataloader = val_dataloader
 
-val_evaluator = dict(type='IoUMetric', iou_metrics=['mIoU'])
+val_evaluator = dict(type='IoUMetric', iou_metrics=['mIoU', 'mDice', 'mFscore'])
 test_evaluator = val_evaluator

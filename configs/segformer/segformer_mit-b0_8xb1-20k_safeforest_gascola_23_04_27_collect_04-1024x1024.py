@@ -4,12 +4,24 @@ _base_ = [
     '../_base_/default_runtime.py', '../_base_/schedules/schedule_20k.py'
 ]
 crop_size = (1024, 1024)
-data_preprocessor = dict(size=crop_size)
+data_preprocessor = dict(type='SegDataPreProcessor',
+    mean=[71.02322328426814, 70.6379940200364, 71.67889280630872],
+    std=[33.02850636286781, 32.481152762876164, 33.01011404576837],
+    crop_size)
 model = dict(
     data_preprocessor=data_preprocessor,
     backbone=dict(
         init_cfg=dict(type='Pretrained', checkpoint='pretrain/mit_b0.pth')),
-    test_cfg=dict(mode='slide', crop_size=(1024, 1024), stride=(768, 768)))
+    test_cfg=dict(mode='slide', crop_size=crop_size, stride=(768, 768),
+            decode_head=dict(
+           loss_decode=dict(
+               type='CrossEntropyLoss', use_sigmoid=False, loss_weight=1.0,
+               # DeepLab used this class weight for cityscapes
+               class_weight=[0.87789837, 0.98765434, 0.99733902, 0.98902638,
+                0.84340816, 1., 0.99959211, 0.99971251, 0.99414109, 0.84302672,
+                 1.,         1., 1.,         0.99067129, 1.]
+            ))))
+
 
 optim_wrapper = dict(
     _delete_=True,
