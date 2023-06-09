@@ -1,8 +1,8 @@
 # dataset settings
-dataset_type = "Safeforest23Dataset"
+dataset_type = "Safeforest23CompressedDataset"
 # dataset settings
-data_root = "/ofo-share/repos-david/Safeforest_CMU_data_dvc//data/site_Gascola/04_27_23/collect_04/processed_01/annotations/safeforest23"
-crop_size = (512, 512)
+data_root = "/ofo-share/repos-david/data/mmseg-training/safeforest23"
+crop_size = (512, 1024)
 train_pipeline = [
     dict(type='LoadImageFromFile'),
     dict(type='LoadAnnotations'),

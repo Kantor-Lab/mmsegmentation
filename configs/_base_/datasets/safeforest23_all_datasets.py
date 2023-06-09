@@ -1,7 +1,8 @@
+
 # dataset settings
 dataset_type = "Safeforest23Dataset"
 # dataset settings
-data_root = "/ofo-share/repos-david/Safeforest_CMU_data_dvc//data/site_Gascola/04_27_23/collect_04/processed_01/annotations/safeforest23"
+#data_root = "/ofo-share/repos-david/data/mmseg-training/safeforest23"
 crop_size = (512, 512)
 train_pipeline = [
     dict(type='LoadImageFromFile'),
@@ -40,28 +41,39 @@ tta_pipeline = [
             ], [dict(type='LoadAnnotations')], [dict(type='PackSegInputs')]
         ])
 ]
+# Individual datasets
+dataset_train_gascola_4 = dict(
+    type="Safeforest23Dataset",
+    data_root="/ofo-share/repos-david/Safeforest_CMU_data_dvc//data/site_Gascola/04_27_23/collect_04/processed_01/annotations/safeforest23",
+    data_prefix=dict(
+        img_path='img_dir/train', seg_map_path='ann_dir/train'),
+    pipeline=train_pipeline)
+
+dataset_val_gascola_4 = dict(
+    type="Safeforest23Dataset",
+    data_root="/ofo-share/repos-david/Safeforest_CMU_data_dvc//data/site_Gascola/04_27_23/collect_04/processed_01/annotations/safeforest23",
+    data_prefix=dict(
+        img_path='img_dir/val', seg_map_path='ann_dir/val'),
+    pipeline=test_pipeline)
+
 train_dataloader = dict(
     batch_size=2,
     num_workers=2,
     persistent_workers=True,
     sampler=dict(type='InfiniteSampler', shuffle=True),
     dataset=dict(
-        type=dataset_type,
-        data_root=data_root,
-        data_prefix=dict(
-            img_path='img_dir/train', seg_map_path='ann_dir/train'),
-        pipeline=train_pipeline))
+        type="ConcatDataset",
+        datasets=[dataset_train_gascola_4]))
+
 val_dataloader = dict(
     batch_size=1,
     num_workers=4,
     persistent_workers=True,
     sampler=dict(type='DefaultSampler', shuffle=False),
     dataset=dict(
-        type=dataset_type,
-        data_root=data_root,
-        data_prefix=dict(
-            img_path='img_dir/val', seg_map_path='ann_dir/val'),
-        pipeline=test_pipeline))
+        type="ConcatDataset",
+        datasets=[dataset_val_gascola_4])
+    )
 test_dataloader = val_dataloader
 
 val_evaluator = dict(type='IoUMetric', iou_metrics=['mIoU'])
