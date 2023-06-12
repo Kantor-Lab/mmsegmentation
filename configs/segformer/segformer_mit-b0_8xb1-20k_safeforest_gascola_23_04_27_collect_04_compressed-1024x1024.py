@@ -7,7 +7,7 @@ crop_size = (1024, 1024)
 data_preprocessor = dict(type='SegDataPreProcessor',
     mean=[71.02322328426814, 70.6379940200364, 71.67889280630872],
     std=[33.02850636286781, 32.481152762876164, 33.01011404576837],
-    crop_size)
+    size=crop_size)
 model = dict(
     data_preprocessor=data_preprocessor,
     backbone=dict(
@@ -18,7 +18,6 @@ model = dict(
                type='CrossEntropyLoss', use_sigmoid=False, loss_weight=1.0,
                # DeepLab used this class weight for cityscapes
                class_weight=[0.86219635, 0.83243454, 0.83369801, 0.99414109] 
-
             ))))
 
 optim_wrapper = dict(
