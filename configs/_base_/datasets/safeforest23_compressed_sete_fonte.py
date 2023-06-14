@@ -16,28 +16,6 @@ train_pipeline = [
     dict(type='RandomFlip', prob=0.5),
     dict(type='PhotoMetricDistortion'),
     dict(type='PackSegInputs'),
-    dict(type="Albu", transforms =[
-            dict(
-                type='ShiftScaleRotate',
-                shift_limit=0.0625,
-                scale_limit=0.0,
-                rotate_limit=0,
-                interpolation=1,
-                p=0.5),
-            dict(
-                type='RandomBrightnessContrast',
-                brightness_limit=[0.1, 0.3],
-                contrast_limit=[0.1, 0.3],
-                p=0.2),
-            dict(type='ChannelShuffle', p=0.1),
-            dict(
-                type='OneOf',
-                transforms=[
-                    dict(type='Blur', blur_limit=3, p=1.0),
-                    dict(type='MedianBlur', blur_limit=3, p=1.0)
-                ],
-                p=0.1),
-        ])
 ]
 test_pipeline = [
     dict(type='LoadImageFromFile'),

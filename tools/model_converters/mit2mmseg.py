@@ -50,6 +50,10 @@ def convert_mit(ckpt):
             stage_i = int(k.split('.')[0].replace('norm', ''))
             new_k = k.replace(f'norm{stage_i}', f'layers.{stage_i-1}.2')
             new_v = v
+        # Remove the backbone from the key
+        elif k.startswith("backbone"):
+            new_k = k[9:]
+            new_v = v
         else:
             new_k = k
             new_v = v

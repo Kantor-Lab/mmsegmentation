@@ -5,9 +5,9 @@ _base_ = [
 ]
 crop_size = (1024, 1024)
 data_preprocessor = dict(type='SegDataPreProcessor',
+    size=crop_size,
     mean=[71.02322328426814, 70.6379940200364, 71.67889280630872],
-    std=[33.02850636286781, 32.481152762876164, 33.01011404576837],
-    crop_size)
+    std=[33.02850636286781, 32.481152762876164, 33.01011404576837])
 model = dict(
     data_preprocessor=data_preprocessor,
     backbone=dict(
