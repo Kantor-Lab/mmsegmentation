@@ -418,6 +418,42 @@ def lip_palette():
         'Right-shoe'
     ]
 
+def safeforest23_classes():
+        [
+            "Dry Grass",
+            "Green Grass",
+            "Dry Shrubs",
+            "Green Shrubs",
+            "Canopy",
+            "Wood Pieces",
+            "Litterfall",
+            "Timber Litter",
+            "Live Trunks",
+            "Bare Earth",
+            "People",
+            "Sky",
+            "Blurry",
+            "Obstacles",
+            "Drones",
+        ]
+
+def safeforest2d_palette():
+    return [[ 255, 224 ,128],  # Dry Grass, 0
+            [ 255, 255 ,0  ],  # Green Grass (canopy), 1
+            [ 255, 0   ,80 ],  # Dry Shrubs, 2
+            [ 134, 112 ,45 ],  # Green Shrubs, 3
+            [ 144, 255 ,0  ],  # Canopy, 4
+            [ 199, 255 ,128],  # Wood Pieces, 5
+            [ 255, 0   ,224],  # Litterfall (bare earth or fuel), 6
+            [ 255, 194 ,0  ],  # Timber Litter, 7
+            [ 95 , 134 ,45 ],  # Live Trunks, 8
+            [ 111, 0   ,255],  # Bare Earth, 9
+            [ 255, 128 ,239],  # People, 10
+            [ 255, 128 ,167],  # Sky, 11
+            [ 83 , 45  ,134],  # Blurry, 12
+            [ 134, 45  ,83 ],  # Obstacle
+            [ 134, 68  ,45 ]]  # Drones, 13
+
 
 dataset_aliases = {
     'cityscapes': ['cityscapes'],
@@ -435,7 +471,8 @@ dataset_aliases = {
     'stare': ['stare', 'STARE'],
     'lip': ['LIP', 'lip'],
     'mapillary_v1': ['mapillary_v1'],
-    'mapillary_v2': ['mapillary_v2']
+    'mapillary_v2': ['mapillary_v2'],
+    'safeforest23': ["safeforest23"],
 }
 
 
